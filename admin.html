@@ -86,16 +86,7 @@
 </head>
 <body>
 
-<div id="loginOverlay">
-    <div class="login-box">
-        <img src="nca.png">
-        <h2>Admin Access</h2>
-        <p>Authorised personnel only</p>
-        <input type="password" id="pwInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
-        <button onclick="doLogin()">Login</button>
-        <div class="login-error" id="loginError">Incorrect password. Access denied.</div>
-    </div>
-</div>
+<!-- No login overlay — handled by login.html -->
 
 <div class="head">
     <img src="nca.png">
@@ -196,25 +187,19 @@
         "e6b11c9cae379a73bab2486cf21521e22a5343739bccec61cf553528453ecf68"
     ];
 
-    async function hashPw(pw) {
-        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
-        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+    // Block access if not logged in via login.html
+    const session = sessionStorage.getItem("nca_auth");
+    if (!session || !HASHES.includes(session)) {
+        window.location.href = "login.html";
+    } else {
+        document.getElementById("dashboard").style.display = "block";
+        refreshAll();
     }
 
-    async function doLogin() {
-        const pw = document.getElementById("pwInput").value;
-        const h  = await hashPw(pw);
-        if (HASHES.includes(h)) {
-            document.getElementById("loginOverlay").style.display = "none";
-            document.getElementById("dashboard").style.display = "block";
-            refreshAll();
-        } else {
-            document.getElementById("loginError").style.display = "block";
-            document.getElementById("pwInput").value = "";
-        }
+    function doLogout() {
+        sessionStorage.removeItem("nca_auth");
+        window.location.href = "index.html";
     }
-
-    function doLogout() { window.location.href = "index.html"; }
 
     function switchPanel(id, el) {
         document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
