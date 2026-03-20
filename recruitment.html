@@ -1,325 +1,61 @@
 <html>
 <head>
     <title>NCA - Academy Gateway</title>
-
     <style>
         * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-            font-family: "Montserrat", Arial, sans-serif;
-            color: white;
-            overflow-x: hidden;
-            padding-top: 90px;
-        }
-
-        /* HEADER */
-        .head {
-            display: flex;
-            align-items: center;
-            padding: 15px 30px;
-            background: rgba(0,0,0,0.95);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            backdrop-filter: blur(10px);
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            z-index: 1000;
-            box-sizing: border-box;
-        }
-
-        .head img {
-            width: 140px;
-            flex-shrink: 0;
-        }
-
-        .title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-            white-space: nowrap;
-            letter-spacing: 1px;
-        }
-
-        .nav {
-            display: flex;
-            gap: 25px;
-            flex-shrink: 0;
-        }
-
-        .nav a {
-            color: white;
-            text-decoration: none;
-            white-space: nowrap;
-            position: relative;
-        }
-
-        .nav a::after {
-            content: "";
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: #00b3ff;
-            transition: 0.3s;
-        }
-
+        body { margin: 0; background: linear-gradient(to bottom, #0a0a0a, #1a1a1a); font-family: "Montserrat", Arial, sans-serif; color: white; overflow-x: hidden; padding-top: 90px; }
+        .head { display: flex; align-items: center; padding: 15px 30px; background: rgba(0,0,0,0.95); position: fixed; top: 0; left: 0; right: 0; backdrop-filter: blur(10px); justify-content: space-between; flex-wrap: nowrap; z-index: 1000; box-sizing: border-box; }
+        .head img { width: 140px; flex-shrink: 0; }
+        .title { position: absolute; left: 50%; transform: translateX(-50%); font-size: 18px; white-space: nowrap; letter-spacing: 1px; }
+        .nav { display: flex; gap: 25px; flex-shrink: 0; align-items: center; }
+        .nav a { color: white; text-decoration: none; white-space: nowrap; position: relative; }
+        .nav a::after { content: ""; position: absolute; width: 0%; height: 2px; bottom: -5px; left: 0; background: #00b3ff; transition: 0.3s; }
         .nav a:hover::after { width: 100%; }
-
-        /* PAGE HEADER */
-        .page-header {
-            text-align: center;
-            padding: 40px 40px 10px;
-            animation: fadeIn 1s ease;
-        }
-
+        .nav .admin-link { padding: 6px 14px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 12px; color: #aaa; transition: 0.2s; }
+        .nav .admin-link:hover { border-color: #00b3ff; color: #00b3ff; }
+        .nav .admin-link::after { display: none; }
+        .page-header { text-align: center; padding: 40px 40px 10px; animation: fadeIn 1s ease; }
         .page-header h1 { font-size: 32px; margin-bottom: 8px; }
-        .page-header p  { color: #aaa; font-size: 14px; max-width: 600px; margin: auto; }
-
-        /* FORM WRAPPER */
-        .form-wrapper {
-            max-width: 780px;
-            margin: 30px auto 80px;
-            padding: 0 20px;
-        }
-
-        /* REGULATIONS BOX */
-        .regulations {
-            background: rgba(255, 180, 0, 0.06);
-            border: 1px solid rgba(255,180,0,0.25);
-            border-radius: 12px;
-            padding: 22px 26px;
-            margin-bottom: 30px;
-            font-size: 13px;
-            color: #ccc;
-            line-height: 1.8;
-        }
-
-        .regulations h3 {
-            color: #ffb400;
-            margin: 0 0 12px;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .regulations ul {
-            margin: 0;
-            padding-left: 18px;
-        }
-
+        .page-header p { color: #aaa; font-size: 14px; max-width: 600px; margin: auto; }
+        .form-wrapper { max-width: 780px; margin: 30px auto 80px; padding: 0 20px; }
+        .regulations { background: rgba(255,180,0,0.06); border: 1px solid rgba(255,180,0,0.25); border-radius: 12px; padding: 22px 26px; margin-bottom: 30px; font-size: 13px; color: #ccc; line-height: 1.8; }
+        .regulations h3 { color: #ffb400; margin: 0 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .regulations ul { margin: 0; padding-left: 18px; }
         .regulations ul li { margin-bottom: 6px; }
-
-        /* SECTION CARD */
-        .section-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 24px;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .section-card h2 {
-            margin: 0 0 6px;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #00b3ff;
-        }
-
-        .section-card .section-desc {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 22px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding-bottom: 14px;
-        }
-
-        /* FIELD */
-        .field-group {
-            margin-bottom: 22px;
-        }
-
-        .field-group label {
-            display: block;
-            font-size: 13px;
-            color: #ccc;
-            margin-bottom: 8px;
-        }
-
+        .section-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 28px; margin-bottom: 24px; }
+        .section-card h2 { margin: 0 0 6px; font-size: 16px; text-transform: uppercase; letter-spacing: 1.5px; color: #00b3ff; }
+        .section-card .section-desc { font-size: 12px; color: #666; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 14px; }
+        .field-group { margin-bottom: 22px; }
+        .field-group label { display: block; font-size: 13px; color: #ccc; margin-bottom: 8px; }
         .field-group label .req { color: #ff5555; margin-left: 2px; }
         .field-group label .hint { color: #555; font-size: 11px; margin-left: 6px; }
-
-        .field-group input[type="text"],
-        .field-group input[type="email"],
-        .field-group textarea,
-        .field-group select {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.05);
-            color: white;
-            font-size: 13px;
-            font-family: "Montserrat", Arial, sans-serif;
-            outline: none;
-            transition: 0.25s;
-            resize: vertical;
-        }
-
-        .field-group input:focus,
-        .field-group textarea:focus,
-        .field-group select:focus {
-            border-color: #00b3ff;
-            background: rgba(0,179,255,0.05);
-        }
-
-        .field-group input::placeholder,
-        .field-group textarea::placeholder { color: #444; }
-
-        .field-group select option { background: #111; color: white; }
-
-        /* RADIO / CHECKBOX */
+        .field-group input[type="text"], .field-group input[type="email"], .field-group textarea { width: 100%; padding: 11px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: white; font-size: 13px; font-family: "Montserrat", Arial, sans-serif; outline: none; transition: 0.25s; resize: vertical; }
+        .field-group input:focus, .field-group textarea:focus { border-color: #00b3ff; background: rgba(0,179,255,0.05); }
+        .field-group input::placeholder, .field-group textarea::placeholder { color: #444; }
         .options { display: flex; flex-direction: column; gap: 10px; }
-
-        .option-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.03);
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 13px;
-            color: #ccc;
-        }
-
-        .option-item:hover {
-            border-color: #00b3ff;
-            background: rgba(0,179,255,0.05);
-            color: white;
-        }
-
-        .option-item input[type="radio"],
-        .option-item input[type="checkbox"] {
-            accent-color: #00b3ff;
-            width: 15px;
-            height: 15px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        /* FILE UPLOAD */
-        .file-upload {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px dashed rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.03);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
+        .option-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); cursor: pointer; transition: 0.2s; font-size: 13px; color: #ccc; }
+        .option-item:hover { border-color: #00b3ff; background: rgba(0,179,255,0.05); color: white; }
+        .option-item input[type="radio"], .option-item input[type="checkbox"] { accent-color: #00b3ff; width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+        .file-upload { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); cursor: pointer; transition: 0.2s; }
         .file-upload:hover { border-color: #00b3ff; }
-
         .file-upload input[type="file"] { display: none; }
-
-        .file-upload .upload-label {
-            font-size: 13px;
-            color: #888;
-            cursor: pointer;
-        }
-
+        .file-upload .upload-label { font-size: 13px; color: #888; cursor: pointer; }
         .file-upload .upload-label span { color: #00b3ff; }
         .file-name { font-size: 12px; color: #666; margin-top: 6px; }
-
-        /* SUBMIT */
-        .submit-area {
-            text-align: center;
-            padding: 10px 0 20px;
-        }
-
-        .submit-btn {
-            padding: 14px 40px;
-            background: #00b3ff;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 15px;
-            font-family: "Montserrat", Arial, sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            letter-spacing: 0.5px;
-        }
-
-        .submit-btn:hover {
-            background: #0090cc;
-            transform: scale(1.04);
-        }
-
-        /* SUCCESS */
-        .success-box {
-            display: none;
-            background: rgba(0,179,255,0.08);
-            border: 1px solid rgba(0,179,255,0.3);
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            margin-top: 20px;
-        }
-
+        .submit-area { text-align: center; padding: 10px 0 20px; }
+        .submit-btn { padding: 14px 40px; background: #00b3ff; border: none; border-radius: 8px; color: white; font-size: 15px; font-family: "Montserrat", Arial, sans-serif; font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
+        .submit-btn:hover { background: #0090cc; transform: scale(1.04); }
+        .submit-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+        .success-box { display: none; background: rgba(0,179,255,0.08); border: 1px solid rgba(0,179,255,0.3); border-radius: 12px; padding: 30px; text-align: center; margin-top: 20px; }
         .success-box h3 { color: #00b3ff; margin-bottom: 8px; }
-        .success-box p  { color: #aaa; font-size: 13px; }
-
-        /* ERROR */
-        .error-msg {
-            font-size: 11px;
-            color: #ff5555;
-            margin-top: 5px;
-            display: none;
-        }
-
-        /* FOOTER */
-        .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #444;
-            padding: 20px 30px 40px;
-        }
-
-        /* ANIMATIONS */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @media screen and (max-width: 600px) {
-            .head { flex-wrap: wrap; padding: 12px 20px; }
-            .title { position: relative; left: 0; transform: none; width: 100%; text-align: center; margin-top: 5px; }
-            .nav { margin-top: 8px; gap: 15px; }
-        }
+        .success-box p { color: #aaa; font-size: 13px; }
+        .error-msg { font-size: 11px; color: #ff5555; margin-top: 5px; display: none; }
+        .footer { text-align: center; font-size: 12px; color: #444; padding: 20px 30px 40px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .head { flex-wrap: wrap; padding: 12px 20px; } .title { position: relative; left: 0; transform: none; width: 100%; text-align: center; margin-top: 5px; } .nav { margin-top: 8px; gap: 15px; } }
     </style>
 </head>
-
 <body>
-
-    <!-- HEADER -->
     <div class="head">
         <img src="nca.png">
         <div class="title">Academy Gateway</div>
@@ -327,18 +63,16 @@
             <a href="index.html">Home</a>
             <a href="casefiles.html">Case Lookup</a>
             <a href="offenders.html">Offenders</a>
+            <a href="admin.html" class="admin-link">Admin</a>
         </div>
     </div>
 
-    <!-- PAGE HEADER -->
     <div class="page-header">
         <h1>NCA Academy Gateway</h1>
         <p>Complete all sections carefully. Incomplete or dishonest applications will be disqualified.</p>
     </div>
 
     <div class="form-wrapper">
-
-        <!-- REGULATIONS -->
         <div class="regulations">
             <h3>Form Regulations</h3>
             <ul>
@@ -353,7 +87,6 @@
             </ul>
         </div>
 
-        <!-- EMAIL -->
         <div class="section-card">
             <div class="field-group">
                 <label>Email Address <span class="req">*</span></label>
@@ -363,43 +96,19 @@
             <div class="field-group">
                 <label>Do you agree to the form regulations? <span class="req">*</span></label>
                 <div class="options">
-                    <label class="option-item">
-                        <input type="radio" name="agree" value="yes"> Yes, I agree to all regulations.
-                    </label>
+                    <label class="option-item"><input type="radio" name="agree" value="yes"> Yes, I agree to all regulations.</label>
                 </div>
                 <div class="error-msg" id="err-agree">You must agree to the regulations to continue.</div>
             </div>
         </div>
 
-        <!-- SECTION 1 -->
         <div class="section-card">
             <h2>Section 1</h2>
             <div class="section-desc">Applicant Information</div>
-
-            <div class="field-group">
-                <label>ROBLOX Username <span class="req">*</span></label>
-                <input type="text" id="roblox" placeholder="YourRobloxUsername">
-                <div class="error-msg" id="err-roblox">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>Discord Username <span class="req">*</span></label>
-                <input type="text" id="discord" placeholder="username#0000 or username">
-                <div class="error-msg" id="err-discord">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>ROBLOX Profile Link <span class="req">*</span></label>
-                <input type="text" id="robloxLink" placeholder="https://www.roblox.com/users/...">
-                <div class="error-msg" id="err-robloxLink">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>Discord ID <span class="req">*</span></label>
-                <input type="text" id="discordId" placeholder="000000000000000000">
-                <div class="error-msg" id="err-discordId">This field is required.</div>
-            </div>
-
+            <div class="field-group"><label>ROBLOX Username <span class="req">*</span></label><input type="text" id="roblox" placeholder="YourRobloxUsername"><div class="error-msg" id="err-roblox">This field is required.</div></div>
+            <div class="field-group"><label>Discord Username <span class="req">*</span></label><input type="text" id="discord" placeholder="username#0000 or username"><div class="error-msg" id="err-discord">This field is required.</div></div>
+            <div class="field-group"><label>ROBLOX Profile Link <span class="req">*</span></label><input type="text" id="robloxLink" placeholder="https://www.roblox.com/users/..."><div class="error-msg" id="err-robloxLink">This field is required.</div></div>
+            <div class="field-group"><label>Discord ID <span class="req">*</span></label><input type="text" id="discordId" placeholder="000000000000000000"><div class="error-msg" id="err-discordId">This field is required.</div></div>
             <div class="field-group">
                 <label>Age Bracket <span class="req">*</span></label>
                 <div class="options">
@@ -410,7 +119,6 @@
                 </div>
                 <div class="error-msg" id="err-age">Please select your age bracket.</div>
             </div>
-
             <div class="field-group">
                 <label>Proof of ROBLOX 2FA <span class="req">*</span> <span class="hint">Image or video, max 10MB</span></label>
                 <div class="file-upload" onclick="document.getElementById('roblox2fa').click()">
@@ -420,7 +128,6 @@
                 <div class="file-name" id="roblox2fa-name"></div>
                 <div class="error-msg" id="err-roblox2fa">Please upload proof of ROBLOX 2FA.</div>
             </div>
-
             <div class="field-group">
                 <label>Proof of Discord 2FA <span class="req">*</span> <span class="hint">Image or video, max 10MB</span></label>
                 <div class="file-upload" onclick="document.getElementById('discord2fa').click()">
@@ -432,47 +139,19 @@
             </div>
         </div>
 
-        <!-- SECTION 2 -->
         <div class="section-card">
             <h2>Section 2</h2>
             <div class="section-desc">Personal Background — 5+ sentences per answer unless stated otherwise.</div>
-
-            <div class="field-group">
-                <label>List 4 skills you possess <span class="req">*</span></label>
-                <textarea id="skills" rows="5" placeholder="1. ...&#10;2. ...&#10;3. ...&#10;4. ..."></textarea>
-                <div class="error-msg" id="err-skills">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>List 4 strengths and weaknesses you possess <span class="req">*</span></label>
-                <textarea id="strengthsWeaknesses" rows="6" placeholder="Strengths:&#10;1. ...&#10;2. ...&#10;Weaknesses:&#10;1. ...&#10;2. ..."></textarea>
-                <div class="error-msg" id="err-strengthsWeaknesses">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>What mistakes have you done in the past and how did you learn from them? <span class="req">*</span></label>
-                <textarea id="mistakes" rows="6" placeholder="Share whatever you are comfortable with, whether in real-life or online..."></textarea>
-                <div class="error-msg" id="err-mistakes">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>How do you see yourself as? <span class="req">*</span></label>
-                <textarea id="selfView" rows="5" placeholder="Describe how you perceive yourself..."></textarea>
-                <div class="error-msg" id="err-selfView">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>How do you describe yourself in exactly one sentence? <span class="req">*</span></label>
-                <input type="text" id="oneSentence" placeholder="One sentence only...">
-                <div class="error-msg" id="err-oneSentence">This field is required.</div>
-            </div>
+            <div class="field-group"><label>List 4 skills you possess <span class="req">*</span></label><textarea id="skills" rows="5" placeholder="1. ...&#10;2. ...&#10;3. ...&#10;4. ..."></textarea><div class="error-msg" id="err-skills">This field is required.</div></div>
+            <div class="field-group"><label>List 4 strengths and weaknesses you possess <span class="req">*</span></label><textarea id="strengthsWeaknesses" rows="6" placeholder="Strengths:&#10;1. ...&#10;2. ...&#10;Weaknesses:&#10;1. ...&#10;2. ..."></textarea><div class="error-msg" id="err-strengthsWeaknesses">This field is required.</div></div>
+            <div class="field-group"><label>What mistakes have you done in the past and how did you learn from them? <span class="req">*</span></label><textarea id="mistakes" rows="6" placeholder="Share whatever you are comfortable with..."></textarea><div class="error-msg" id="err-mistakes">This field is required.</div></div>
+            <div class="field-group"><label>How do you see yourself as? <span class="req">*</span></label><textarea id="selfView" rows="5" placeholder="Describe how you perceive yourself..."></textarea><div class="error-msg" id="err-selfView">This field is required.</div></div>
+            <div class="field-group"><label>How do you describe yourself in exactly one sentence? <span class="req">*</span></label><input type="text" id="oneSentence" placeholder="One sentence only..."><div class="error-msg" id="err-oneSentence">This field is required.</div></div>
         </div>
 
-        <!-- SECTION 3 -->
         <div class="section-card">
             <h2>Section 3</h2>
             <div class="section-desc">Multiple Choice Questions</div>
-
             <div class="field-group">
                 <label>Full form of OSINT <span class="req">*</span></label>
                 <div class="options">
@@ -483,7 +162,6 @@
                 </div>
                 <div class="error-msg" id="err-osint">Please select an answer.</div>
             </div>
-
             <div class="field-group">
                 <label>What is the purpose of HUMINT within an agency? <span class="req">*</span></label>
                 <div class="options">
@@ -494,7 +172,6 @@
                 </div>
                 <div class="error-msg" id="err-humint">Please select an answer.</div>
             </div>
-
             <div class="field-group">
                 <label>What is DDOS? <span class="req">*</span></label>
                 <div class="options">
@@ -505,7 +182,6 @@
                 </div>
                 <div class="error-msg" id="err-ddos">Please select an answer.</div>
             </div>
-
             <div class="field-group">
                 <label>What is the purpose of an interrogation? <span class="req">*</span></label>
                 <div class="options">
@@ -518,65 +194,26 @@
             </div>
         </div>
 
-        <!-- SECTION 4 -->
         <div class="section-card">
             <h2>Section 4</h2>
-            <div class="section-desc">Why you? — Answer with your best effort and show us why you should be chosen.</div>
-
-            <div class="field-group">
-                <label>What experience do you have in the field of intel? Have you ever worked in an intel division/regiment? <span class="req">*</span></label>
-                <textarea id="experience" rows="6" placeholder="Describe your experience..."></textarea>
-                <div class="error-msg" id="err-experience">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>What makes you special as a candidate? What qualities would get you into the NCA Academy? <span class="req">*</span></label>
-                <textarea id="special" rows="6" placeholder="Tell us what sets you apart..."></textarea>
-                <div class="error-msg" id="err-special">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>Name two of the strengths mentioned above and explain how you can use them in the NCA. <span class="req">*</span></label>
-                <textarea id="strengthsUse" rows="6" placeholder="Strength 1: ...&#10;Strength 2: ..."></textarea>
-                <div class="error-msg" id="err-strengthsUse">This field is required.</div>
-            </div>
+            <div class="section-desc">Why you? — Answer with your best effort.</div>
+            <div class="field-group"><label>What experience do you have in the field of intel? <span class="req">*</span></label><textarea id="experience" rows="6" placeholder="Describe your experience..."></textarea><div class="error-msg" id="err-experience">This field is required.</div></div>
+            <div class="field-group"><label>What makes you special as a candidate? <span class="req">*</span></label><textarea id="special" rows="6" placeholder="Tell us what sets you apart..."></textarea><div class="error-msg" id="err-special">This field is required.</div></div>
+            <div class="field-group"><label>Name two strengths and explain how you can use them in the NCA. <span class="req">*</span></label><textarea id="strengthsUse" rows="6" placeholder="Strength 1: ...&#10;Strength 2: ..."></textarea><div class="error-msg" id="err-strengthsUse">This field is required.</div></div>
         </div>
 
-        <!-- SECTION 5 -->
         <div class="section-card">
             <h2>Section 5</h2>
             <div class="section-desc">Main Knowledge from Intel & Self-Questions</div>
-
-            <div class="field-group">
-                <label>Why do you want to enter the NCA Academy? <span class="req">*</span></label>
-                <textarea id="whyNCA" rows="6" placeholder="Your answer here..."></textarea>
-                <div class="error-msg" id="err-whyNCA">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>What do you believe are the core responsibilities of the National Crime Agency? <span class="req">*</span></label>
-                <textarea id="coreResponsibilities" rows="6" placeholder="Your answer here..."></textarea>
-                <div class="error-msg" id="err-coreResponsibilities">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>What is "intelligence"? Explain it in your own words. <span class="req">*</span></label>
-                <textarea id="intelligence" rows="6" placeholder="Your answer here..."></textarea>
-                <div class="error-msg" id="err-intelligence">This field is required.</div>
-            </div>
-
-            <div class="field-group">
-                <label>What are the major types of intelligence, and which type is most associated with strong information‑seeking and problem‑solving skills? <span class="req">*</span></label>
-                <textarea id="intelTypes" rows="6" placeholder="Your answer here..."></textarea>
-                <div class="error-msg" id="err-intelTypes">This field is required.</div>
-            </div>
+            <div class="field-group"><label>Why do you want to enter the NCA Academy? <span class="req">*</span></label><textarea id="whyNCA" rows="6" placeholder="Your answer here..."></textarea><div class="error-msg" id="err-whyNCA">This field is required.</div></div>
+            <div class="field-group"><label>What do you believe are the core responsibilities of the NCA? <span class="req">*</span></label><textarea id="coreResponsibilities" rows="6" placeholder="Your answer here..."></textarea><div class="error-msg" id="err-coreResponsibilities">This field is required.</div></div>
+            <div class="field-group"><label>What is "intelligence"? Explain it in your own words. <span class="req">*</span></label><textarea id="intelligence" rows="6" placeholder="Your answer here..."></textarea><div class="error-msg" id="err-intelligence">This field is required.</div></div>
+            <div class="field-group"><label>What are the major types of intelligence, and which is most associated with information‑seeking and problem‑solving? <span class="req">*</span></label><textarea id="intelTypes" rows="6" placeholder="Your answer here..."></textarea><div class="error-msg" id="err-intelTypes">This field is required.</div></div>
         </div>
 
-        <!-- FINAL TICK -->
         <div class="section-card">
             <h2>The End</h2>
             <div class="section-desc">Tick. — X —</div>
-
             <div class="field-group">
                 <div class="options">
                     <label class="option-item"><input type="checkbox" id="tick1"> I will not talk to anyone about this application.</label>
@@ -587,28 +224,27 @@
             </div>
         </div>
 
-        <!-- SUBMIT -->
         <div class="submit-area">
-            <button class="submit-btn" onclick="submitForm()">Submit Application</button>
+            <button class="submit-btn" id="submitBtn" onclick="submitForm()">Submit Application</button>
         </div>
-
-        <!-- SUCCESS -->
         <div class="success-box" id="successBox">
             <h3>Application Submitted</h3>
             <p>Your application has been received. Do not ask any agents about your progress. You will be contacted in due course.</p>
         </div>
-
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        © National Crime Agency • Academy Gateway • Authorized Public Access
-    </div>
+    <div class="footer">© National Crime Agency • Academy Gateway • Authorized Public Access</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        const { createClient } = supabase;
+        const db = createClient(
+            "https://saigwnmokoiapfetxqtn.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWd3bm1va29pYXBmZXR4cXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDMxOTAsImV4cCI6MjA4OTU3OTE5MH0.ZN4tel3cBMt8kXFUMs0afqP05rJiPsiSTH4YCgAk5Kg"
+        );
+
         function showFile(input, labelId) {
-            const label = document.getElementById(labelId);
-            label.textContent = input.files[0] ? input.files[0].name : "";
+            document.getElementById(labelId).textContent = input.files[0] ? input.files[0].name : "";
         }
 
         function getRadio(name) {
@@ -622,38 +258,28 @@
         }
 
         function required(id) {
-            const el = document.getElementById(id);
-            const val = el ? el.value.trim() : "";
+            const val = (document.getElementById(id)?.value || "").trim();
             showError(id, !val);
             return !!val;
         }
 
-        function submitForm() {
+        async function submitForm() {
             let valid = true;
-
-            // Email
             const email = document.getElementById("email").value.trim();
             const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
             showError("email", !emailOk);
             if (!emailOk) valid = false;
 
-            // Agree
             const agree = getRadio("agree");
             showError("agree", !agree);
             if (!agree) valid = false;
 
-            // Text fields
-            const textFields = ["roblox","discord","robloxLink","discordId","skills","strengthsWeaknesses",
-                "mistakes","selfView","oneSentence","experience","special","strengthsUse",
-                "whyNCA","coreResponsibilities","intelligence","intelTypes"];
-            textFields.forEach(f => { if (!required(f)) valid = false; });
+            ["roblox","discord","robloxLink","discordId","skills","strengthsWeaknesses","mistakes","selfView","oneSentence","experience","special","strengthsUse","whyNCA","coreResponsibilities","intelligence","intelTypes"].forEach(f => { if (!required(f)) valid = false; });
 
-            // Age
             const age = getRadio("age");
             showError("age", !age);
             if (!age) valid = false;
 
-            // Files
             const r2fa = document.getElementById("roblox2fa").files.length > 0;
             showError("roblox2fa", !r2fa);
             if (!r2fa) valid = false;
@@ -662,40 +288,36 @@
             showError("discord2fa", !d2fa);
             if (!d2fa) valid = false;
 
-            // MCQs
             ["osint","humint","ddos","interrogation"].forEach(q => {
                 const ans = getRadio(q);
                 showError(q, !ans);
                 if (!ans) valid = false;
             });
 
-            // Ticks
             const t1 = document.getElementById("tick1").checked;
             const t2 = document.getElementById("tick2").checked;
             const t3 = document.getElementById("tick3").checked;
             showError("ticks", !(t1 && t2 && t3));
             if (!(t1 && t2 && t3)) valid = false;
 
-            if (!valid) {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-                return;
-            }
+            if (!valid) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
 
-            // Build submission object
-            const submission = {
-                id: Date.now(),
-                timestamp: new Date().toISOString(),
+            const btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.textContent = "Submitting...";
+
+            const { error } = await db.from("applications").insert({
                 email,
                 roblox:    document.getElementById("roblox").value.trim(),
                 discord:   document.getElementById("discord").value.trim(),
-                robloxLink:document.getElementById("robloxLink").value.trim(),
-                discordId: document.getElementById("discordId").value.trim(),
-                age:       age,
+                roblox_link: document.getElementById("robloxLink").value.trim(),
+                discord_id:  document.getElementById("discordId").value.trim(),
+                age,
                 skills:    document.getElementById("skills").value.trim(),
-                strengthsWeaknesses: document.getElementById("strengthsWeaknesses").value.trim(),
+                strengths_weaknesses: document.getElementById("strengthsWeaknesses").value.trim(),
                 mistakes:  document.getElementById("mistakes").value.trim(),
-                selfView:  document.getElementById("selfView").value.trim(),
-                oneSentence: document.getElementById("oneSentence").value.trim(),
+                self_view: document.getElementById("selfView").value.trim(),
+                one_sentence: document.getElementById("oneSentence").value.trim(),
                 mcq: {
                     osint:        getRadio("osint"),
                     humint:       getRadio("humint"),
@@ -704,26 +326,25 @@
                 },
                 experience:   document.getElementById("experience").value.trim(),
                 special:      document.getElementById("special").value.trim(),
-                strengthsUse: document.getElementById("strengthsUse").value.trim(),
-                whyNCA:       document.getElementById("whyNCA").value.trim(),
-                coreResponsibilities: document.getElementById("coreResponsibilities").value.trim(),
+                strengths_use: document.getElementById("strengthsUse").value.trim(),
+                why_nca:      document.getElementById("whyNCA").value.trim(),
+                core_responsibilities: document.getElementById("coreResponsibilities").value.trim(),
                 intelligence: document.getElementById("intelligence").value.trim(),
-                intelTypes:   document.getElementById("intelTypes").value.trim(),
+                intel_types:  document.getElementById("intelTypes").value.trim(),
                 status: "pending"
-            };
+            });
 
-            // Save to localStorage
-            const existing = JSON.parse(localStorage.getItem("applications")) || [];
-            existing.push(submission);
-            localStorage.setItem("applications", JSON.stringify(existing));
+            if (error) {
+                btn.disabled = false;
+                btn.textContent = "Submit Application";
+                alert("Submission failed. Please try again.");
+                return;
+            }
 
-            // Show success
             document.getElementById("successBox").style.display = "block";
-            document.querySelector(".submit-btn").disabled = true;
-            document.querySelector(".submit-btn").style.opacity = "0.4";
+            btn.textContent = "Submitted";
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
         }
     </script>
-
 </body>
 </html>
