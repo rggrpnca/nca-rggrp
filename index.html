@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>National Crime Agency - Agency Portal</title>
+    <title>National Crime Agency - Public Portal</title>
 
     <style>
         body {
@@ -9,6 +9,30 @@
             font-family: "Montserrat", Arial, sans-serif;
             color: white;
             overflow-x: hidden;
+        }
+
+        /* BACKGROUND */
+        .bg {
+            position: fixed;
+            inset: 0;
+            background-image: url("ncabg.jpg");
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            filter: brightness(0.3) grayscale(0.4);
+            z-index: -2;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.5) 0%,
+                rgba(0,0,0,0.2) 40%,
+                rgba(0,0,0,0.7) 100%
+            );
+            z-index: -1;
         }
 
         /* HEADER */
@@ -193,10 +217,14 @@
 
 <body>
 
+    <!-- BACKGROUND -->
+    <div class="bg"></div>
+    <div class="bg-overlay"></div>
+
     <!-- HEADER -->
     <div class="head">
         <img src="nca.png">
-        <div class="title">Agency Portal</div>
+        <div class="title">Public Intelligence Portal</div>
 
         <div class="nav">
             <a href="casefiles.html">Case Lookup</a>
@@ -209,7 +237,7 @@
     <!-- HERO -->
     <div class="hero">
         <h1>National Crime Agency</h1>
-        <p>The intelligence department of Royal Grenadier Guards Roleplay fighting against various crimes.</p>
+        <p>Protecting the public by leading the fight against serious and organised crime.</p>
     </div>
 
     <!-- MAIN -->
@@ -227,8 +255,8 @@
             </div>
 
             <div class="card" onclick="location.href='recruitment.html'">
-                <h3>Agency Recruitment</h3>
-                <p>Fill out a form to participate in our recruitment..</p>
+                <h3>Public Reports</h3>
+                <p>Access official statements and released intelligence summaries.</p>
             </div>
 
         </div>
@@ -241,7 +269,7 @@
         </div>
 
         <div class="footer">
-            © National Crime Agency • Royal Grenadier Guards Roleplay • Agency Portal
+            © National Crime Agency • Public Portal • Authorized Public Access
         </div>
     </div>
 
