@@ -40,6 +40,10 @@ export default async function handler(req, res) {
     try {
         switch (action) {
 
+            case "verifyToken": {
+                return res.status(200).json({ success: true });
+            }
+
             case "deleteApplication": {
                 const { error } = await supabase.from("applications").delete().eq("id", payload.id);
                 if (error) return res.status(500).json({ error: error.message });
