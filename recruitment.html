@@ -247,6 +247,22 @@
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWd3bm1va29pYXBmZXR4cXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDMxOTAsImV4cCI6MjA4OTU3OTE5MH0.ZN4tel3cBMt8kXFUMs0afqP05rJiPsiSTH4YCgAk5Kg"
         );
 
+        // Check if applications are open
+        async function checkWaveStatus() {
+            const { data } = await db.from("settings").select("*").eq("key", "wave_status").single();
+            const isOpen = !data || data.value === "open";
+            if (!isOpen) {
+                document.querySelector(".form-wrapper").innerHTML = `
+                    <div style="text-align:center; padding: 80px 20px;">
+                        <div style="font-size:48px; margin-bottom:20px;">🔒</div>
+                        <h2 style="color:#ff5555; margin-bottom:12px;">Applications Closed</h2>
+                        <p style="color:#aaa; font-size:14px;">Applications for this wave are currently closed. Please check back later.</p>
+                    </div>`;
+            }
+        }
+
+        checkWaveStatus();
+
         function showFile(input, labelId) {
             document.getElementById(labelId).textContent = input.files[0] ? input.files[0].name : "";
         }
