@@ -120,6 +120,16 @@
             <div class="panel" id="panel-applications">
                 <div class="panel-title">Applications Inbox</div>
                 <div class="panel-sub">Review and act on submitted gateway applications</div>
+                <div class="card" style="margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <div style="font-size:14px; font-weight:bold;">Applications Status</div>
+                        <div style="font-size:12px; color:#555; margin-top:4px;">Control whether the public can submit new applications</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span id="waveStatusText" style="font-size:13px; color:#aaa;"></span>
+                        <button id="waveToggleBtn" class="btn btn-green" onclick="toggleWave()">Loading...</button>
+                    </div>
+                </div>
                 <div id="applicationsList"></div>
             </div>
 
@@ -216,8 +226,38 @@
         setTimeout(() => t.classList.remove("show"), 2800);
     }
 
+    async function toggleWave() {
+        const { data } = await db.from("settings").select("*").eq("key", "wave_status").single();
+        const isOpen = !data || data.value === "open";
+        const newStatus = isOpen ? "closed" : "open";
+        if (data) {
+            await db.from("settings").update({ value: newStatus }).eq("key", "wave_status");
+        } else {
+            await db.from("settings").insert({ key: "wave_status", value: newStatus });
+        }
+        updateWaveStatus();
+        toast(`Applications ${newStatus === "open" ? "opened" : "closed"}.`);
+    }
+
+    async function updateWaveStatus() {
+        const { data } = await db.from("settings").select("*").eq("key", "wave_status").single();
+        const isOpen = !data || data.value === "open";
+        const btn  = document.getElementById("waveToggleBtn");
+        const text = document.getElementById("waveStatusText");
+        if (!btn || !text) return;
+        if (isOpen) {
+            btn.textContent = "Close Applications";
+            btn.className = "btn btn-red";
+            text.innerHTML = `<span style="color:#00dc64;">● Open</span>`;
+        } else {
+            btn.textContent = "Open Applications";
+            btn.className = "btn btn-green";
+            text.innerHTML = `<span style="color:#ff5555;">● Closed</span>`;
+        }
+    }
+
     async function refreshAll() {
-        await Promise.all([updateStats(), renderApplications(), renderRecruitment(), renderOffenders(), renderCaseFiles()]);
+        await Promise.all([updateStats(), updateWaveStatus(), renderApplications(), renderRecruitment(), renderOffenders(), renderCaseFiles()]);
     }
 
     async function updateStats() {
