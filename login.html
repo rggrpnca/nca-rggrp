@@ -60,26 +60,36 @@
     </div>
 
     <script>
-        const HASHES = [
-            "cd6094be301ceee491c4a2cdbe38d51b630152edfad1d80b6fea2459322197e6",
-            "e6b11c9cae379a73bab2486cf21521e22a5343739bccec61cf553528453ecf68"
-        ];
-
-        async function hashPw(pw) {
-            const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
-        }
-
         async function doLogin() {
-            const pw = document.getElementById("pwInput").value;
-            const h  = await hashPw(pw);
-            if (HASHES.includes(h)) {
-                sessionStorage.setItem("nca_auth", h);
-                window.location.href = "admin.html";
-            } else {
-                document.getElementById("loginError").style.display = "block";
-                document.getElementById("pwInput").value = "";
+            const pw  = document.getElementById("pwInput").value;
+            const btn = document.querySelector("button");
+            const err = document.getElementById("loginError");
+            btn.textContent = "Verifying...";
+            btn.disabled = true;
+            err.style.display = "none";
+
+            try {
+                const res  = await fetch("/api/admin", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "login", payload: { password: pw } })
+                });
+                const data = await res.json();
+
+                if (data.success && data.token) {
+                    sessionStorage.setItem("nca_token", data.token);
+                    window.location.href = `/api/getAdmin?token=${data.token}`;
+                } else {
+                    err.style.display = "block";
+                    document.getElementById("pwInput").value = "";
+                }
+            } catch (e) {
+                err.textContent = "Connection error. Try again.";
+                err.style.display = "block";
             }
+
+            btn.textContent = "Login";
+            btn.disabled = false;
         }
     </script>
 </body>
