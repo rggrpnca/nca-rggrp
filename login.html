@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title>NCA - Admin Login</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+            font-family: "Montserrat", Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 40px;
+            width: 360px;
+            text-align: center;
+        }
+        .login-box img { width: 120px; margin-bottom: 20px; }
+        .login-box h2 { font-size: 18px; margin-bottom: 6px; }
+        .login-box p { font-size: 12px; color: #555; margin-bottom: 24px; }
+        .login-box input {
+            width: 100%; padding: 12px 14px;
+            border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05); color: white;
+            font-size: 14px; outline: none; margin-bottom: 14px;
+            font-family: "Montserrat", Arial, sans-serif; transition: 0.25s;
+        }
+        .login-box input:focus { border-color: #00b3ff; }
+        .login-box button {
+            width: 100%; padding: 12px;
+            background: #00b3ff; border: none; border-radius: 8px;
+            color: white; font-size: 14px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+            font-family: "Montserrat", Arial, sans-serif;
+        }
+        .login-box button:hover { background: #0090cc; }
+        .login-error { margin-top: 12px; font-size: 12px; color: #ff5555; display: none; }
+        .back-link { margin-top: 16px; display: block; font-size: 12px; color: #555; text-decoration: none; transition: 0.2s; }
+        .back-link:hover { color: #aaa; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <img src="nca.png">
+        <h2>Admin Access</h2>
+        <p>Authorised personnel only</p>
+        <input type="password" id="pwInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button onclick="doLogin()">Login</button>
+        <div class="login-error" id="loginError">Incorrect password. Access denied.</div>
+        <a class="back-link" href="index.html">← Back to Portal</a>
+    </div>
+
+    <script>
+        const HASHES = [
+            "cd6094be301ceee491c4a2cdbe38d51b630152edfad1d80b6fea2459322197e6",
+            "e6b11c9cae379a73bab2486cf21521e22a5343739bccec61cf553528453ecf68"
+        ];
+
+        async function hashPw(pw) {
+            const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
+        }
+
+        async function doLogin() {
+            const pw = document.getElementById("pwInput").value;
+            const h  = await hashPw(pw);
+            if (HASHES.includes(h)) {
+                sessionStorage.setItem("nca_auth", h);
+                window.location.href = "admin.html";
+            } else {
+                document.getElementById("loginError").style.display = "block";
+                document.getElementById("pwInput").value = "";
+            }
+        }
+    </script>
+</body>
+</html>
