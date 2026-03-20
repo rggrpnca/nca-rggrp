@@ -192,22 +192,34 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWd3bm1va29pYXBmZXR4cXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDMxOTAsImV4cCI6MjA4OTU3OTE5MH0.ZN4tel3cBMt8kXFUMs0afqP05rJiPsiSTH4YCgAk5Kg"
     );
 
-    const HASHES = [
-        "cd6094be301ceee491c4a2cdbe38d51b630152edfad1d80b6fea2459322197e6",
-        "e6b11c9cae379a73bab2486cf21521e22a5343739bccec61cf553528453ecf68"
-    ];
-
     // Block access if not logged in via login.html
-    const session = sessionStorage.getItem("nca_auth");
-    if (!session || !HASHES.includes(session)) {
+    const token = sessionStorage.getItem("nca_token");
+    if (!token) {
         window.location.href = "login.html";
     } else {
-        document.getElementById("dashboard").style.display = "block";
-        refreshAll();
+        // Verify token is valid server-side before showing dashboard
+        fetch("/api/admin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-admin-token": token
+            },
+            body: JSON.stringify({ action: "verifyToken", payload: {} })
+        }).then(r => r.json()).then(data => {
+            if (data.success) {
+                document.getElementById("dashboard").style.display = "block";
+                refreshAll();
+            } else {
+                sessionStorage.removeItem("nca_token");
+                window.location.href = "login.html";
+            }
+        }).catch(() => {
+            window.location.href = "login.html";
+        });
     }
 
     function doLogout() {
-        sessionStorage.removeItem("nca_auth");
+        sessionStorage.removeItem("nca_token");
         window.location.href = "index.html";
     }
 
@@ -344,9 +356,13 @@
     }
 
     async function apiCall(action, payload) {
+        const token = sessionStorage.getItem("nca_token");
         const res = await fetch("/api/admin", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "x-admin-token": token
+            },
             body: JSON.stringify({ action, payload })
         });
         return res.json();
