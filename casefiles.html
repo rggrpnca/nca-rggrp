@@ -1,0 +1,219 @@
+<html>
+<head>
+    <title>Case File Lookup</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+            font-family: "Montserrat", Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding-top: 140px;
+        }
+
+        /* HEADER */
+        .head {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(0,0,0,0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: auto;
+            backdrop-filter: blur(10px);
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .head img {
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            white-space: nowrap;
+        }
+
+        .nav {
+            display: flex;
+            gap: 5px;
+            flex-wrap: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #00b3ff;
+            transition: 0.3s;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        /* CONTAINER */
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 12px;
+            width: 420px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            background: #00b3ff;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0090cc;
+            transform: scale(1.05);
+        }
+
+        .status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #aaa;
+        }
+
+        @media screen and (max-width: 600px) {
+            .head {
+                flex-wrap: wrap;
+                padding: 12px 20px;
+            }
+
+            .title {
+                position: relative;
+                left: 0;
+                transform: none;
+                width: 100%;
+                text-align: center;
+                margin-top: 5px;
+                order: 3;
+            }
+
+            .nav {
+                margin-top: 8px;
+                gap: 4px;
+                order: 2;
+            }
+
+            .nav a {
+                font-size: 13px;
+                padding: 5px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="head">
+        <img src="nca.png">
+        <div class="title">Case File Lookup</div>
+
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="offenders.html">Offenders</a>
+            <a href="recruitment.html">Recruitment</a>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+        <div class="box">
+            <h2>Select Case</h2>
+
+            <select id="caseSelect">
+                <option value="">Select Case Reference</option>
+            </select>
+
+            <button onclick="openCase()">Access Case File</button>
+
+            <div class="status" id="statusText"></div>
+        </div>
+    </div>
+
+    <script>
+        const dropdown = document.getElementById("caseSelect");
+        const status = document.getElementById("statusText");
+
+        // Load cases from localStorage
+        const cases = JSON.parse(localStorage.getItem("cases")) || [];
+
+        if (cases.length === 0) {
+            status.textContent = "No case files available.";
+        }
+
+        // Populate dropdown
+        cases.forEach(c => {
+            const option = document.createElement("option");
+            option.value = c.link;
+            option.textContent = c.id;
+            dropdown.appendChild(option);
+        });
+
+        function openCase() {
+            const selected = dropdown.value;
+
+            if (!selected) {
+                status.textContent = "Please select a case.";
+                return;
+            }
+
+            status.textContent = "Opening case file...";
+            window.open(selected, "_blank");
+        }
+    </script>
+
+</body>
+</html>
