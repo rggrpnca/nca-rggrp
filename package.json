@@ -1,5 +1,5 @@
 {
-  "name": "nca-portal",
+  "name": "nca-rggrp",
   "version": "1.0.0",
   "dependencies": {
     "@supabase/supabase-js": "^2.0.0"
