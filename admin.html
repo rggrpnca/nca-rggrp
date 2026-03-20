@@ -3,196 +3,51 @@
     <title>NCA - Admin Panel</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-            font-family: "Montserrat", Arial, sans-serif;
-            color: white;
-            min-height: 100vh;
-        }
-
-        /* ── LOGIN OVERLAY ── */
-        #loginOverlay {
-            position: fixed; inset: 0;
-            background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 9999;
-        }
-
-        .login-box {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            padding: 40px;
-            width: 360px;
-            text-align: center;
-        }
-
+        body { background: linear-gradient(to bottom, #0a0a0a, #1a1a1a); font-family: "Montserrat", Arial, sans-serif; color: white; min-height: 100vh; }
+        #loginOverlay { position: fixed; inset: 0; background: linear-gradient(to bottom, #0a0a0a, #1a1a1a); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .login-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 40px; width: 360px; text-align: center; }
         .login-box img { width: 120px; margin-bottom: 20px; }
-        .login-box h2  { font-size: 18px; margin-bottom: 6px; }
-        .login-box p   { font-size: 12px; color: #555; margin-bottom: 24px; }
-
-        .login-box input {
-            width: 100%; padding: 12px 14px;
-            border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.05); color: white;
-            font-size: 14px; outline: none; margin-bottom: 14px;
-            font-family: "Montserrat", Arial, sans-serif; transition: 0.25s;
-        }
-
+        .login-box h2 { font-size: 18px; margin-bottom: 6px; }
+        .login-box p { font-size: 12px; color: #555; margin-bottom: 24px; }
+        .login-box input { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: white; font-size: 14px; outline: none; margin-bottom: 14px; font-family: "Montserrat", Arial, sans-serif; transition: 0.25s; }
         .login-box input:focus { border-color: #00b3ff; }
-
-        .login-box button {
-            width: 100%; padding: 12px;
-            background: #00b3ff; border: none; border-radius: 8px;
-            color: white; font-size: 14px; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
-            font-family: "Montserrat", Arial, sans-serif;
-        }
-
+        .login-box button { width: 100%; padding: 12px; background: #00b3ff; border: none; border-radius: 8px; color: white; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: "Montserrat", Arial, sans-serif; }
         .login-box button:hover { background: #0090cc; }
-
-        .login-error {
-            margin-top: 12px; font-size: 12px;
-            color: #ff5555; display: none;
-        }
-
-        /* ── HEADER ── */
-        .head {
-            display: flex; align-items: center;
-            padding: 15px 30px;
-            background: rgba(0,0,0,0.95);
-            position: fixed; top: 0; left: 0; right: 0;
-            backdrop-filter: blur(10px);
-            justify-content: space-between;
-            z-index: 100; box-sizing: border-box;
-        }
-
+        .login-error { margin-top: 12px; font-size: 12px; color: #ff5555; display: none; }
+        .head { display: flex; align-items: center; padding: 15px 30px; background: rgba(0,0,0,0.95); position: fixed; top: 0; left: 0; right: 0; backdrop-filter: blur(10px); justify-content: space-between; z-index: 100; box-sizing: border-box; }
         .head img { width: 130px; }
-
         .head-title { font-size: 16px; letter-spacing: 1px; color: #00b3ff; }
-
-        .logout-btn {
-            padding: 7px 16px; background: transparent;
-            border: 1px solid rgba(255,80,80,0.4); color: #ff5555;
-            border-radius: 6px; cursor: pointer; font-size: 12px;
-            transition: 0.2s; font-family: "Montserrat", Arial, sans-serif;
-        }
-
+        .logout-btn { padding: 7px 16px; background: transparent; border: 1px solid rgba(255,80,80,0.4); color: #ff5555; border-radius: 6px; cursor: pointer; font-size: 12px; transition: 0.2s; font-family: "Montserrat", Arial, sans-serif; }
         .logout-btn:hover { background: rgba(255,80,80,0.1); }
-
-        /* ── LAYOUT ── */
         #dashboard { display: none; padding-top: 80px; }
-
         .layout { display: flex; min-height: calc(100vh - 80px); }
-
-        /* ── SIDEBAR ── */
-        .sidebar {
-            width: 220px; flex-shrink: 0;
-            background: rgba(0,0,0,0.4);
-            border-right: 1px solid rgba(255,255,255,0.06);
-            padding: 24px 0;
-            position: sticky; top: 80px;
-            height: calc(100vh - 80px);
-            overflow-y: auto;
-        }
-
-        .sidebar-label {
-            font-size: 10px; color: #444; text-transform: uppercase;
-            letter-spacing: 1.5px; padding: 0 20px 10px;
-        }
-
-        .sidebar a {
-            display: flex; align-items: center; gap: 10px;
-            padding: 11px 20px; color: #888;
-            text-decoration: none; font-size: 13px;
-            transition: 0.2s; border-left: 3px solid transparent;
-        }
-
+        .sidebar { width: 220px; flex-shrink: 0; background: rgba(0,0,0,0.4); border-right: 1px solid rgba(255,255,255,0.06); padding: 24px 0; position: sticky; top: 80px; height: calc(100vh - 80px); overflow-y: auto; }
+        .sidebar-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1.5px; padding: 0 20px 10px; }
+        .sidebar a { display: flex; align-items: center; gap: 10px; padding: 11px 20px; color: #888; text-decoration: none; font-size: 13px; transition: 0.2s; border-left: 3px solid transparent; }
         .sidebar a:hover { color: white; background: rgba(255,255,255,0.04); }
-
-        .sidebar a.active {
-            color: #00b3ff;
-            border-left-color: #00b3ff;
-            background: rgba(0,179,255,0.06);
-        }
-
-        .sidebar .badge-count {
-            margin-left: auto; background: #00b3ff;
-            color: white; font-size: 10px; font-weight: bold;
-            padding: 2px 7px; border-radius: 10px;
-        }
-
-        /* ── MAIN ── */
+        .sidebar a.active { color: #00b3ff; border-left-color: #00b3ff; background: rgba(0,179,255,0.06); }
+        .sidebar .badge-count { margin-left: auto; background: #00b3ff; color: white; font-size: 10px; font-weight: bold; padding: 2px 7px; border-radius: 10px; }
         .main { flex: 1; padding: 30px; overflow-x: hidden; }
-
-        /* ── SECTION PANELS ── */
         .panel { display: none; animation: fadeIn 0.3s ease; }
         .panel.active { display: block; }
-
-        .panel-title {
-            font-size: 22px; margin-bottom: 4px;
-        }
-
-        .panel-sub {
-            font-size: 13px; color: #555; margin-bottom: 24px;
-        }
-
-        /* ── CARDS ── */
-        .card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px; padding: 20px;
-            margin-bottom: 16px; transition: 0.2s;
-        }
-
+        .panel-title { font-size: 22px; margin-bottom: 4px; }
+        .panel-sub { font-size: 13px; color: #555; margin-bottom: 24px; }
+        .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 16px; transition: 0.2s; }
         .card:hover { background: rgba(255,255,255,0.06); }
-
-        .card-header {
-            display: flex; align-items: center;
-            justify-content: space-between; flex-wrap: wrap; gap: 10px;
-            margin-bottom: 12px;
-        }
-
+        .card-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
         .card-header h3 { font-size: 15px; }
-
-        .card-meta { font-size: 12px; color: #555; }
-
-        .card-fields {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px; margin-bottom: 14px;
-        }
-
+        .card-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; }
         .field-item { font-size: 12px; color: #888; }
         .field-item span { color: #ddd; display: block; margin-top: 2px; }
-
         .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
-        /* ── BUTTONS ── */
-        .btn {
-            padding: 7px 16px; border-radius: 6px;
-            border: none; cursor: pointer; font-size: 12px;
-            font-family: "Montserrat", Arial, sans-serif;
-            font-weight: bold; transition: 0.2s;
-        }
-
-        .btn-blue  { background: rgba(0,179,255,0.15); color: #00b3ff; border: 1px solid #00b3ff; }
-        .btn-blue:hover  { background: rgba(0,179,255,0.3); }
-        .btn-red   { background: rgba(255,80,80,0.12); color: #ff5555; border: 1px solid #ff5555; }
-        .btn-red:hover   { background: rgba(255,80,80,0.25); }
-        .btn-green { background: rgba(0,220,100,0.12); color: #00dc64; border: 1px solid #00dc64; }
-        .btn-green:hover { background: rgba(0,220,100,0.25); }
-        .btn-purple{ background: rgba(180,0,255,0.12); color: #cc44ff; border: 1px solid #cc44ff; }
-        .btn-purple:hover{ background: rgba(180,0,255,0.25); }
-
-        /* ── BADGE ── */
-        .badge {
-            display: inline-block; padding: 3px 10px;
-            border-radius: 20px; font-size: 10px; font-weight: bold;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-
+        .btn { padding: 7px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-family: "Montserrat", Arial, sans-serif; font-weight: bold; transition: 0.2s; }
+        .btn-blue   { background: rgba(0,179,255,0.15);  color: #00b3ff; border: 1px solid #00b3ff; }
+        .btn-blue:hover   { background: rgba(0,179,255,0.3); }
+        .btn-red    { background: rgba(255,80,80,0.12);  color: #ff5555; border: 1px solid #ff5555; }
+        .btn-red:hover    { background: rgba(255,80,80,0.25); }
+        .btn-green  { background: rgba(0,220,100,0.12);  color: #00dc64; border: 1px solid #00dc64; }
+        .btn-green:hover  { background: rgba(0,220,100,0.25); }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
         .badge.pending    { background: rgba(255,180,0,0.12);  color: #ffb400; border: 1px solid #ffb400; }
         .badge.approved   { background: rgba(0,220,100,0.12);  color: #00dc64; border: 1px solid #00dc64; }
         .badge.rejected   { background: rgba(255,80,80,0.12);  color: #ff5555; border: 1px solid #ff5555; }
@@ -201,130 +56,36 @@
         .badge.monitored  { background: rgba(0,179,255,0.12);  color: #00b3ff; border: 1px solid #00b3ff; }
         .badge.blacklisted{ background: rgba(180,0,255,0.12);  color: #cc44ff; border: 1px solid #cc44ff; }
         .badge.other      { background: rgba(255,255,255,0.06);color: #aaa;    border: 1px solid #555; }
-
-        /* ── MODAL ── */
-        #modal {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.85); z-index: 500;
-            align-items: center; justify-content: center; padding: 20px;
-        }
-
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
         #modal.open { display: flex; }
-
-        .modal-box {
-            background: #111; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px; width: 100%; max-width: 680px;
-            max-height: 85vh; overflow-y: auto; padding: 30px;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute; top: 16px; right: 20px;
-            background: none; border: none; color: #666;
-            font-size: 20px; cursor: pointer; transition: 0.2s;
-        }
-
+        .modal-box { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; width: 100%; max-width: 680px; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; }
+        .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #666; font-size: 20px; cursor: pointer; transition: 0.2s; }
         .modal-close:hover { color: white; }
-
         .modal-box h2 { font-size: 18px; margin-bottom: 4px; }
         .modal-box .modal-sub { font-size: 12px; color: #555; margin-bottom: 20px; }
-
-        .modal-section {
-            margin-bottom: 20px;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            padding-top: 16px;
-        }
-
-        .modal-section h4 {
-            font-size: 11px; color: #00b3ff; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 12px;
-        }
-
+        .modal-section { margin-bottom: 20px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; }
+        .modal-section h4 { font-size: 11px; color: #00b3ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
         .modal-field { margin-bottom: 12px; font-size: 13px; }
         .modal-field label { color: #666; font-size: 11px; display: block; margin-bottom: 3px; }
         .modal-field p { color: #ddd; line-height: 1.6; }
-
-        .modal-actions {
-            display: flex; gap: 10px; flex-wrap: wrap;
-            margin-top: 20px; padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,0.06);
-        }
-
-        /* ── FORMS ── */
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 14px; margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block; font-size: 12px; color: #888; margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%; padding: 10px 12px;
-            border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: white;
-            font-size: 13px; outline: none; transition: 0.2s;
-            font-family: "Montserrat", Arial, sans-serif;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus { border-color: #00b3ff; }
-
-        .form-group select option { background: #111; }
-
-        /* ── EMPTY STATE ── */
-        .empty {
-            text-align: center; color: #333;
-            padding: 60px 0; font-size: 14px;
-        }
-
-        /* ── STATS ROW ── */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 14px; margin-bottom: 28px;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px; padding: 16px; text-align: center;
-        }
-
+        .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-size: 13px; outline: none; transition: 0.2s; font-family: "Montserrat", Arial, sans-serif; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #00b3ff; }
+        .empty { text-align: center; color: #333; padding: 60px 0; font-size: 14px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-bottom: 28px; }
+        .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 16px; text-align: center; }
         .stat-card .stat-num { font-size: 28px; font-weight: bold; color: #00b3ff; }
         .stat-card .stat-label { font-size: 11px; color: #555; margin-top: 4px; }
-
-        /* ── TOAST ── */
-        #toast {
-            position: fixed; bottom: 30px; right: 30px;
-            background: #00b3ff; color: white;
-            padding: 12px 20px; border-radius: 8px;
-            font-size: 13px; opacity: 0;
-            transition: opacity 0.3s; z-index: 9999;
-            pointer-events: none;
-        }
-
+        #toast { position: fixed; bottom: 30px; right: 30px; background: #00b3ff; color: white; padding: 12px 20px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity 0.3s; z-index: 9999; pointer-events: none; }
         #toast.show { opacity: 1; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            .sidebar { width: 180px; }
-            .main { padding: 16px; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 600px) { .sidebar { width: 180px; } .main { padding: 16px; } }
     </style>
 </head>
 <body>
 
-<!-- ── LOGIN OVERLAY ── -->
 <div id="loginOverlay">
     <div class="login-box">
         <img src="nca.png">
@@ -336,18 +97,14 @@
     </div>
 </div>
 
-<!-- ── HEADER ── -->
 <div class="head">
     <img src="nca.png">
     <div class="head-title">Admin Panel</div>
     <button class="logout-btn" onclick="doLogout()">Log Out</button>
 </div>
 
-<!-- ── DASHBOARD ── -->
 <div id="dashboard">
     <div class="layout">
-
-        <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-label">Navigation</div>
             <a href="#" class="active" onclick="switchPanel('overview',this)">&#9632; Overview</a>
@@ -356,107 +113,61 @@
             <a href="#" onclick="switchPanel('offenders',this)">&#9632; Offenders</a>
             <a href="#" onclick="switchPanel('casefiles',this)">&#9632; Case Files</a>
         </div>
-
-        <!-- MAIN -->
         <div class="main">
 
-            <!-- OVERVIEW -->
             <div class="panel active" id="panel-overview">
                 <div class="panel-title">Overview</div>
                 <div class="panel-sub">Summary of all NCA data</div>
                 <div class="stats">
-                    <div class="stat-card">
-                        <div class="stat-num" id="stat-apps">0</div>
-                        <div class="stat-label">Applications</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-num" id="stat-pending">0</div>
-                        <div class="stat-label">Pending Review</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-num" id="stat-offenders">0</div>
-                        <div class="stat-label">Offenders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-num" id="stat-cases">0</div>
-                        <div class="stat-label">Case Files</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-num" id="stat-apps">0</div><div class="stat-label">Applications</div></div>
+                    <div class="stat-card"><div class="stat-num" id="stat-pending">0</div><div class="stat-label">Pending Review</div></div>
+                    <div class="stat-card"><div class="stat-num" id="stat-offenders">0</div><div class="stat-label">Offenders</div></div>
+                    <div class="stat-card"><div class="stat-num" id="stat-cases">0</div><div class="stat-label">Case Files</div></div>
                 </div>
             </div>
 
-            <!-- APPLICATIONS -->
             <div class="panel" id="panel-applications">
                 <div class="panel-title">Applications Inbox</div>
                 <div class="panel-sub">Review and act on submitted gateway applications</div>
                 <div id="applicationsList"></div>
             </div>
 
-            <!-- RECRUITMENT RESPONSES -->
             <div class="panel" id="panel-recruitment">
                 <div class="panel-title">Recruitment Form Responses</div>
                 <div class="panel-sub">All submitted recruitment responses</div>
                 <div id="recruitmentList"></div>
             </div>
 
-            <!-- OFFENDERS -->
             <div class="panel" id="panel-offenders">
                 <div class="panel-title">Offenders Manager</div>
                 <div class="panel-sub">Add, view and remove offenders from the public database</div>
-
-                <!-- Add Offender Form -->
                 <div class="card" style="margin-bottom:24px;">
                     <div class="card-header"><h3>Add New Offender</h3></div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Roblox Username</label>
-                            <input type="text" id="o-roblox" placeholder="RobloxUser">
-                        </div>
-                        <div class="form-group">
-                            <label>Discord Username</label>
-                            <input type="text" id="o-discord" placeholder="user#0000">
-                        </div>
-                        <div class="form-group">
-                            <label>Regiment</label>
-                            <input type="text" id="o-regiment" placeholder="Regiment name">
-                        </div>
-                        <div class="form-group">
-                            <label>Punishment</label>
-                            <input type="text" id="o-punishment" placeholder="e.g. Banned, Warned, Blacklisted...">
-                        </div>
+                        <div class="form-group"><label>Roblox Username</label><input type="text" id="o-roblox" placeholder="RobloxUser"></div>
+                        <div class="form-group"><label>Discord Username</label><input type="text" id="o-discord" placeholder="user#0000"></div>
+                        <div class="form-group"><label>Regiment</label><input type="text" id="o-regiment" placeholder="Regiment name"></div>
+                        <div class="form-group"><label>Punishment</label><input type="text" id="o-punishment" placeholder="e.g. Banned, Warned, Blacklisted..."></div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group" style="grid-column:1/-1">
-                            <label>Reason</label>
-                            <textarea id="o-reason" rows="3" placeholder="Reason for listing..."></textarea>
-                        </div>
+                        <div class="form-group" style="grid-column:1/-1"><label>Reason</label><textarea id="o-reason" rows="3" placeholder="Reason for listing..."></textarea></div>
                     </div>
                     <button class="btn btn-blue" onclick="addOffender()">Publish to Offenders List</button>
                 </div>
-
                 <div id="offendersList"></div>
             </div>
 
-            <!-- CASE FILES -->
             <div class="panel" id="panel-casefiles">
                 <div class="panel-title">Case Files Manager</div>
                 <div class="panel-sub">Publish and manage public case file links</div>
-
-                <!-- Add Case File Form -->
                 <div class="card" style="margin-bottom:24px;">
                     <div class="card-header"><h3>Publish New Case File</h3></div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>Case Reference ID</label>
-                            <input type="text" id="c-id" placeholder="e.g. NCA-2024-001">
-                        </div>
-                        <div class="form-group">
-                            <label>Case File Link</label>
-                            <input type="text" id="c-link" placeholder="https://...">
-                        </div>
+                        <div class="form-group"><label>Case Reference ID</label><input type="text" id="c-id" placeholder="e.g. NCA-2024-001"></div>
+                        <div class="form-group"><label>Case File Link</label><input type="text" id="c-link" placeholder="https://..."></div>
                     </div>
                     <button class="btn btn-blue" onclick="addCaseFile()">Publish Case File</button>
                 </div>
-
                 <div id="caseFilesList"></div>
             </div>
 
@@ -464,19 +175,27 @@
     </div>
 </div>
 
-<!-- ── MODAL ── -->
 <div id="modal">
     <div class="modal-box">
         <button class="modal-close" onclick="closeModal()">✕</button>
         <div id="modalContent"></div>
     </div>
 </div>
-
-<!-- ── TOAST ── -->
 <div id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    const HASH = "cd6094be301ceee491c4a2cdbe38d51b630152edfad1d80b6fea2459322197e6";
+    const { createClient } = supabase;
+    const db = createClient(
+        "https://saigwnmokoiapfetxqtn.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWd3bm1va29pYXBmZXR4cXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDMxOTAsImV4cCI6MjA4OTU3OTE5MH0.ZN4tel3cBMt8kXFUMs0afqP05rJiPsiSTH4YCgAk5Kg"
+    );
+
+    // Two admin password hashes
+    const HASHES = [
+        "cd6094be301ceee491c4a2cdbe38d51b630152edfad1d80b6fea2459322197e6",
+        "e6b11c9cae379a73bab2486cf21521e22a5343739bccec61cf553528453ecf68"
+    ];
 
     async function hashPw(pw) {
         const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pw));
@@ -486,7 +205,7 @@
     async function doLogin() {
         const pw = document.getElementById("pwInput").value;
         const h  = await hashPw(pw);
-        if (h === HASH) {
+        if (HASHES.includes(h)) {
             document.getElementById("loginOverlay").style.display = "none";
             document.getElementById("dashboard").style.display = "block";
             refreshAll();
@@ -496,11 +215,8 @@
         }
     }
 
-    function doLogout() {
-        window.location.href = "index.html";
-    }
+    function doLogout() { window.location.href = "index.html"; }
 
-    // ── NAVIGATION ──
     function switchPanel(id, el) {
         document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
         document.querySelectorAll(".sidebar a").forEach(a => a.classList.remove("active"));
@@ -509,7 +225,6 @@
         refreshAll();
     }
 
-    // ── TOAST ──
     function toast(msg) {
         const t = document.getElementById("toast");
         t.textContent = msg;
@@ -517,40 +232,29 @@
         setTimeout(() => t.classList.remove("show"), 2800);
     }
 
-    // ── DATA HELPERS ──
-    const get = k => JSON.parse(localStorage.getItem(k)) || [];
-    const set = (k,v) => localStorage.setItem(k, JSON.stringify(v));
-
-    // ── REFRESH ALL ──
-    function refreshAll() {
-        updateStats();
-        renderApplications();
-        renderRecruitment();
-        renderOffenders();
-        renderCaseFiles();
+    async function refreshAll() {
+        await Promise.all([updateStats(), renderApplications(), renderRecruitment(), renderOffenders(), renderCaseFiles()]);
     }
 
-    // ── STATS ──
-    function updateStats() {
-        const apps      = get("applications");
-        const offenders = get("offenders");
-        const cases     = get("cases");
-        const pending   = apps.filter(a => a.status === "pending").length;
-        document.getElementById("stat-apps").textContent     = apps.length;
-        document.getElementById("stat-pending").textContent  = pending;
-        document.getElementById("stat-offenders").textContent= offenders.length;
-        document.getElementById("stat-cases").textContent    = cases.length;
-        document.getElementById("appCount").textContent      = pending;
+    async function updateStats() {
+        const [{ count: appCount }, { count: pendingCount }, { count: offCount }, { count: caseCount }] = await Promise.all([
+            db.from("applications").select("*", { count: "exact", head: true }),
+            db.from("applications").select("*", { count: "exact", head: true }).eq("status", "pending"),
+            db.from("offenders").select("*", { count: "exact", head: true }),
+            db.from("cases").select("*", { count: "exact", head: true })
+        ]);
+        document.getElementById("stat-apps").textContent     = appCount || 0;
+        document.getElementById("stat-pending").textContent  = pendingCount || 0;
+        document.getElementById("stat-offenders").textContent= offCount || 0;
+        document.getElementById("stat-cases").textContent    = caseCount || 0;
+        document.getElementById("appCount").textContent      = pendingCount || 0;
     }
 
-    // ── APPLICATIONS ──
-    function renderApplications() {
-        const apps = get("applications");
-        const el   = document.getElementById("applicationsList");
-        if (!apps.length) { el.innerHTML = `<div class="empty">No applications yet.</div>`; return; }
-        el.innerHTML = apps.slice().reverse().map((a,ri) => {
-            const i = apps.length - 1 - ri;
-            return `
+    async function renderApplications() {
+        const { data } = await db.from("applications").select("*").order("created_at", { ascending: false });
+        const el = document.getElementById("applicationsList");
+        if (!data?.length) { el.innerHTML = `<div class="empty">No applications yet.</div>`; return; }
+        el.innerHTML = data.map(a => `
             <div class="card">
                 <div class="card-header">
                     <h3>${a.roblox || "Unknown"}</h3>
@@ -558,106 +262,85 @@
                 </div>
                 <div class="card-fields">
                     <div class="field-item">Discord <span>${a.discord||"N/A"}</span></div>
-                    <div class="field-item">Age Bracket <span>${a.age||"N/A"}</span></div>
+                    <div class="field-item">Age <span>${a.age||"N/A"}</span></div>
                     <div class="field-item">Email <span>${a.email||"N/A"}</span></div>
-                    <div class="field-item">Submitted <span>${new Date(a.timestamp).toLocaleDateString()}</span></div>
+                    <div class="field-item">Submitted <span>${new Date(a.created_at).toLocaleDateString()}</span></div>
                 </div>
                 <div class="card-actions">
-                    <button class="btn btn-blue"  onclick="viewApplication(${i})">View Full</button>
-                    <button class="btn btn-green" onclick="markPassed(${i})">Passed</button>
-                    <button class="btn btn-red"   onclick="deleteApplication(${i})">Delete</button>
+                    <button class="btn btn-blue"  onclick="viewApplication('${a.id}')">View Full</button>
+                    <button class="btn btn-green" onclick="markPassed('${a.id}')">Passed</button>
+                    <button class="btn btn-red"   onclick="deleteApplication('${a.id}')">Delete</button>
                 </div>
-            </div>`;
-        }).join("");
+            </div>`).join("");
     }
 
-    function viewApplication(i) {
-        const a = get("applications")[i];
-        if (!a) return;
-        const mcqAnswers = {
+    async function viewApplication(id) {
+        const { data } = await db.from("applications").select("*").eq("id", id).single();
+        if (!data) return;
+        const mcqMap = {
             osint: {a:"Operations Security Intelligence",b:"Open Source Intelligence",c:"Output Security Intelligence",d:"On Site Intelligence"},
             humint:{a:"To interrogate suspects",b:"To study a suspect's profile",c:"To gather Intelligence through humans",d:"To study behaviour through habits"},
             ddos:  {a:"Diverted Doxx Of Systems",b:"Distributed Denial Of Service",c:"Dynamic Data Overload System",d:"Digital Defense Optimization Scheme"},
             interrogation:{a:"To get clear understanding",b:"To identify guilt/innocence",c:"To analyze behaviour",d:"To expose truth"}
         };
         document.getElementById("modalContent").innerHTML = `
-            <h2>${a.roblox || "Applicant"}</h2>
-            <div class="modal-sub">Submitted ${new Date(a.timestamp).toLocaleString()} • ${a.email}</div>
-
-            <div class="modal-section">
-                <h4>Section 1 — Applicant Info</h4>
-                <div class="modal-field"><label>Roblox</label><p>${a.roblox}</p></div>
-                <div class="modal-field"><label>Discord</label><p>${a.discord}</p></div>
-                <div class="modal-field"><label>Roblox Link</label><p>${a.robloxLink}</p></div>
-                <div class="modal-field"><label>Discord ID</label><p>${a.discordId}</p></div>
-                <div class="modal-field"><label>Age Bracket</label><p>${a.age}</p></div>
+            <h2>${data.roblox || "Applicant"}</h2>
+            <div class="modal-sub">Submitted ${new Date(data.created_at).toLocaleString()} • ${data.email}</div>
+            <div class="modal-section"><h4>Section 1 — Applicant Info</h4>
+                <div class="modal-field"><label>Roblox</label><p>${data.roblox}</p></div>
+                <div class="modal-field"><label>Discord</label><p>${data.discord}</p></div>
+                <div class="modal-field"><label>Roblox Link</label><p>${data.roblox_link}</p></div>
+                <div class="modal-field"><label>Discord ID</label><p>${data.discord_id}</p></div>
+                <div class="modal-field"><label>Age Bracket</label><p>${data.age}</p></div>
             </div>
-
-            <div class="modal-section">
-                <h4>Section 2 — Personal Background</h4>
-                <div class="modal-field"><label>Skills</label><p>${a.skills}</p></div>
-                <div class="modal-field"><label>Strengths & Weaknesses</label><p>${a.strengthsWeaknesses}</p></div>
-                <div class="modal-field"><label>Past Mistakes</label><p>${a.mistakes}</p></div>
-                <div class="modal-field"><label>How they see themselves</label><p>${a.selfView}</p></div>
-                <div class="modal-field"><label>One Sentence</label><p>${a.oneSentence}</p></div>
+            <div class="modal-section"><h4>Section 2 — Personal Background</h4>
+                <div class="modal-field"><label>Skills</label><p>${data.skills}</p></div>
+                <div class="modal-field"><label>Strengths & Weaknesses</label><p>${data.strengths_weaknesses}</p></div>
+                <div class="modal-field"><label>Past Mistakes</label><p>${data.mistakes}</p></div>
+                <div class="modal-field"><label>How they see themselves</label><p>${data.self_view}</p></div>
+                <div class="modal-field"><label>One Sentence</label><p>${data.one_sentence}</p></div>
             </div>
-
-            <div class="modal-section">
-                <h4>Section 3 — MCQ Answers</h4>
-                <div class="modal-field"><label>OSINT</label><p>${mcqAnswers.osint[a.mcq?.osint]||"Not answered"}</p></div>
-                <div class="modal-field"><label>HUMINT</label><p>${mcqAnswers.humint[a.mcq?.humint]||"Not answered"}</p></div>
-                <div class="modal-field"><label>DDOS</label><p>${mcqAnswers.ddos[a.mcq?.ddos]||"Not answered"}</p></div>
-                <div class="modal-field"><label>Interrogation</label><p>${mcqAnswers.interrogation[a.mcq?.interrogation]||"Not answered"}</p></div>
+            <div class="modal-section"><h4>Section 3 — MCQ Answers</h4>
+                <div class="modal-field"><label>OSINT</label><p>${mcqMap.osint[data.mcq?.osint]||"Not answered"}</p></div>
+                <div class="modal-field"><label>HUMINT</label><p>${mcqMap.humint[data.mcq?.humint]||"Not answered"}</p></div>
+                <div class="modal-field"><label>DDOS</label><p>${mcqMap.ddos[data.mcq?.ddos]||"Not answered"}</p></div>
+                <div class="modal-field"><label>Interrogation</label><p>${mcqMap.interrogation[data.mcq?.interrogation]||"Not answered"}</p></div>
             </div>
-
-            <div class="modal-section">
-                <h4>Section 4 — Why You?</h4>
-                <div class="modal-field"><label>Experience</label><p>${a.experience}</p></div>
-                <div class="modal-field"><label>What makes them special</label><p>${a.special}</p></div>
-                <div class="modal-field"><label>Strengths in NCA</label><p>${a.strengthsUse}</p></div>
+            <div class="modal-section"><h4>Section 4 — Why You?</h4>
+                <div class="modal-field"><label>Experience</label><p>${data.experience}</p></div>
+                <div class="modal-field"><label>What makes them special</label><p>${data.special}</p></div>
+                <div class="modal-field"><label>Strengths in NCA</label><p>${data.strengths_use}</p></div>
             </div>
-
-            <div class="modal-section">
-                <h4>Section 5 — Knowledge</h4>
-                <div class="modal-field"><label>Why NCA</label><p>${a.whyNCA}</p></div>
-                <div class="modal-field"><label>Core Responsibilities</label><p>${a.coreResponsibilities}</p></div>
-                <div class="modal-field"><label>What is Intelligence</label><p>${a.intelligence}</p></div>
-                <div class="modal-field"><label>Types of Intelligence</label><p>${a.intelTypes}</p></div>
+            <div class="modal-section"><h4>Section 5 — Knowledge</h4>
+                <div class="modal-field"><label>Why NCA</label><p>${data.why_nca}</p></div>
+                <div class="modal-field"><label>Core Responsibilities</label><p>${data.core_responsibilities}</p></div>
+                <div class="modal-field"><label>What is Intelligence</label><p>${data.intelligence}</p></div>
+                <div class="modal-field"><label>Types of Intelligence</label><p>${data.intel_types}</p></div>
             </div>
-
             <div class="modal-actions">
-                <button class="btn btn-green" onclick="markPassed(${i}); closeModal()">Passed</button>
-                <button class="btn btn-red"   onclick="deleteApplication(${i}); closeModal()">Delete Application</button>
-            </div>
-        `;
+                <button class="btn btn-green" onclick="markPassed('${data.id}'); closeModal()">Passed</button>
+                <button class="btn btn-red"   onclick="deleteApplication('${data.id}'); closeModal()">Delete Application</button>
+            </div>`;
         document.getElementById("modal").classList.add("open");
     }
 
-    function deleteApplication(i) {
-        const apps = get("applications");
-        apps.splice(i,1);
-        set("applications", apps);
-        refreshAll();
-        toast("Application deleted.");
-    }
-
-    function markPassed(i) {
-        const apps = get("applications");
-        if (!apps[i]) return;
-        apps[i].status = "approved";
-        set("applications", apps);
+    async function markPassed(id) {
+        await db.from("applications").update({ status: "approved" }).eq("id", id);
         refreshAll();
         toast("Applicant marked as passed.");
     }
 
-    // ── RECRUITMENT RESPONSES ──
-    function renderRecruitment() {
-        const apps = get("applications");
-        const el   = document.getElementById("recruitmentList");
-        if (!apps.length) { el.innerHTML = `<div class="empty">No recruitment responses yet.</div>`; return; }
-        el.innerHTML = apps.slice().reverse().map((a,ri) => {
-            const i = apps.length - 1 - ri;
-            return `
+    async function deleteApplication(id) {
+        await db.from("applications").delete().eq("id", id);
+        refreshAll();
+        toast("Application deleted.");
+    }
+
+    async function renderRecruitment() {
+        const { data } = await db.from("applications").select("*").order("created_at", { ascending: false });
+        const el = document.getElementById("recruitmentList");
+        if (!data?.length) { el.innerHTML = `<div class="empty">No recruitment responses yet.</div>`; return; }
+        el.innerHTML = data.map(a => `
             <div class="card">
                 <div class="card-header">
                     <h3>${a.roblox||"Unknown"}</h3>
@@ -667,38 +350,34 @@
                     <div class="field-item">Discord <span>${a.discord||"N/A"}</span></div>
                     <div class="field-item">Email <span>${a.email||"N/A"}</span></div>
                     <div class="field-item">Age <span>${a.age||"N/A"}</span></div>
-                    <div class="field-item">Date <span>${new Date(a.timestamp).toLocaleDateString()}</span></div>
+                    <div class="field-item">Date <span>${new Date(a.created_at).toLocaleDateString()}</span></div>
                 </div>
                 <div class="card-actions">
-                    <button class="btn btn-blue" onclick="viewApplication(${i})">View Full Response</button>
+                    <button class="btn btn-blue" onclick="viewApplication('${a.id}')">View Full Response</button>
                 </div>
-            </div>`;
-        }).join("");
+            </div>`).join("");
     }
 
-    // ── OFFENDERS ──
-    function addOffender() {
+    async function addOffender() {
         const roblox     = document.getElementById("o-roblox").value.trim();
         const discord    = document.getElementById("o-discord").value.trim();
         const regiment   = document.getElementById("o-regiment").value.trim();
-        const punishment = document.getElementById("o-punishment").value;
+        const punishment = document.getElementById("o-punishment").value.trim();
         const reason     = document.getElementById("o-reason").value.trim();
         if (!roblox) { toast("Roblox username is required."); return; }
-        const offenders = get("offenders");
-        offenders.push({ roblox, discord, regiment, punishment, reason });
-        set("offenders", offenders);
+        const { error } = await db.from("offenders").insert({ roblox, discord, regiment, punishment, reason });
+        if (error) { toast("Failed to add offender."); return; }
         document.getElementById("o-roblox").value = "";
         document.getElementById("o-discord").value = "";
         document.getElementById("o-regiment").value = "";
+        document.getElementById("o-punishment").value = "";
         document.getElementById("o-reason").value = "";
         refreshAll();
         toast("Offender published.");
     }
 
-    function deleteOffender(i) {
-        const offenders = get("offenders");
-        offenders.splice(i,1);
-        set("offenders", offenders);
+    async function deleteOffender(id) {
+        await db.from("offenders").delete().eq("id", id);
         refreshAll();
         toast("Offender removed.");
     }
@@ -712,14 +391,11 @@
         return "other";
     }
 
-    function renderOffenders() {
-        const offenders = get("offenders");
+    async function renderOffenders() {
+        const { data } = await db.from("offenders").select("*").order("created_at", { ascending: false });
         const el = document.getElementById("offendersList");
-        if (!offenders.length) { el.innerHTML = `<div class="empty">No offenders on record.</div>`; return; }
-        el.innerHTML = offenders.slice().reverse().map((_,ri) => {
-            const i = offenders.length - 1 - ri;
-            const o = offenders[i];
-            return `
+        if (!data?.length) { el.innerHTML = `<div class="empty">No offenders on record.</div>`; return; }
+        el.innerHTML = data.map(o => `
             <div class="card">
                 <div class="card-header">
                     <h3>${o.roblox||"Unknown"}</h3>
@@ -731,65 +407,47 @@
                     <div class="field-item">Reason   <span>${o.reason||"N/A"}</span></div>
                 </div>
                 <div class="card-actions">
-                    <button class="btn btn-red" onclick="deleteOffender(${i})">Remove</button>
+                    <button class="btn btn-red" onclick="deleteOffender('${o.id}')">Remove</button>
                 </div>
-            </div>`;
-        }).join("");
+            </div>`).join("");
     }
 
-    // ── CASE FILES ──
-    function addCaseFile() {
-        const id   = document.getElementById("c-id").value.trim();
-        const link = document.getElementById("c-link").value.trim();
-        if (!id || !link) { toast("Case ID and link are required."); return; }
-        const cases = get("cases");
-        cases.push({ id, link });
-        set("cases", cases);
+    async function addCaseFile() {
+        const case_id = document.getElementById("c-id").value.trim();
+        const link    = document.getElementById("c-link").value.trim();
+        if (!case_id || !link) { toast("Case ID and link are required."); return; }
+        const { error } = await db.from("cases").insert({ case_id, link });
+        if (error) { toast("Failed to publish case file."); return; }
         document.getElementById("c-id").value = "";
         document.getElementById("c-link").value = "";
         refreshAll();
         toast("Case file published.");
     }
 
-    function deleteCaseFile(i) {
-        const cases = get("cases");
-        cases.splice(i,1);
-        set("cases", cases);
+    async function deleteCaseFile(id) {
+        await db.from("cases").delete().eq("id", id);
         refreshAll();
         toast("Case file removed.");
     }
 
-    function renderCaseFiles() {
-        const cases = get("cases");
+    async function renderCaseFiles() {
+        const { data } = await db.from("cases").select("*").order("created_at", { ascending: false });
         const el = document.getElementById("caseFilesList");
-        if (!cases.length) { el.innerHTML = `<div class="empty">No case files published.</div>`; return; }
-        el.innerHTML = cases.slice().reverse().map((_,ri) => {
-            const i = cases.length - 1 - ri;
-            const c = cases[i];
-            return `
+        if (!data?.length) { el.innerHTML = `<div class="empty">No case files published.</div>`; return; }
+        el.innerHTML = data.map(c => `
             <div class="card">
-                <div class="card-header">
-                    <h3>${c.id}</h3>
-                </div>
+                <div class="card-header"><h3>${c.case_id}</h3></div>
                 <div class="card-fields">
                     <div class="field-item">Link <span><a href="${c.link}" target="_blank" style="color:#00b3ff">${c.link}</a></span></div>
                 </div>
                 <div class="card-actions">
-                    <button class="btn btn-red" onclick="deleteCaseFile(${i})">Remove</button>
+                    <button class="btn btn-red" onclick="deleteCaseFile('${c.id}')">Remove</button>
                 </div>
-            </div>`;
-        }).join("");
+            </div>`).join("");
     }
 
-    // ── MODAL ──
-    function closeModal() {
-        document.getElementById("modal").classList.remove("open");
-    }
-
-    document.getElementById("modal").addEventListener("click", function(e) {
-        if (e.target === this) closeModal();
-    });
+    function closeModal() { document.getElementById("modal").classList.remove("open"); }
+    document.getElementById("modal").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
 </script>
-
 </body>
 </html>
