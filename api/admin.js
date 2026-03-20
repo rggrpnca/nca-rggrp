@@ -5,12 +5,37 @@ const supabase = createClient(
     process.env.SUPABASE_SERVICE_KEY
 );
 
+const PASSWORDS = [
+    process.env.ADMIN_PASSWORD_1,
+    process.env.ADMIN_PASSWORD_2
+];
+
+const SECRET_TOKEN = process.env.ADMIN_SECRET_TOKEN;
+
+function validateToken(req) {
+    const token = req.headers["x-admin-token"];
+    return token === SECRET_TOKEN;
+}
+
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
     const { action, payload } = req.body;
+
+    if (action === "login") {
+        const { password } = payload;
+        if (PASSWORDS.includes(password)) {
+            return res.status(200).json({ success: true, token: SECRET_TOKEN });
+        } else {
+            return res.status(401).json({ error: "Invalid password" });
+        }
+    }
+
+    if (!validateToken(req)) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
 
     try {
         switch (action) {
