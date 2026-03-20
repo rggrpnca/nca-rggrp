@@ -227,16 +227,9 @@
     }
 
     async function toggleWave() {
-        const { data } = await db.from("settings").select("*").eq("key", "wave_status").single();
-        const isOpen = !data || data.value === "open";
-        const newStatus = isOpen ? "closed" : "open";
-        if (data) {
-            await db.from("settings").update({ value: newStatus }).eq("key", "wave_status");
-        } else {
-            await db.from("settings").insert({ key: "wave_status", value: newStatus });
-        }
+        const result = await apiCall("toggleWave", {});
         updateWaveStatus();
-        toast(`Applications ${newStatus === "open" ? "opened" : "closed"}.`);
+        toast(`Applications ${result.status === "open" ? "opened" : "closed"}.`);
     }
 
     async function updateWaveStatus() {
@@ -350,14 +343,23 @@
         document.getElementById("modal").classList.add("open");
     }
 
+    async function apiCall(action, payload) {
+        const res = await fetch("/api/admin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action, payload })
+        });
+        return res.json();
+    }
+
     async function markPassed(id) {
-        await db.from("applications").update({ status: "approved" }).eq("id", id);
+        await apiCall("updateApplication", { id, data: { status: "approved" } });
         refreshAll();
         toast("Applicant marked as passed.");
     }
 
     async function deleteApplication(id) {
-        await db.from("applications").delete().eq("id", id);
+        await apiCall("deleteApplication", { id });
         refreshAll();
         toast("Application deleted.");
     }
@@ -391,8 +393,8 @@
         const punishment = document.getElementById("o-punishment").value.trim();
         const reason     = document.getElementById("o-reason").value.trim();
         if (!roblox) { toast("Roblox username is required."); return; }
-        const { error } = await db.from("offenders").insert({ roblox, discord, regiment, punishment, reason });
-        if (error) { toast("Failed to add offender."); return; }
+        const result = await apiCall("addOffender", { roblox, discord, regiment, punishment, reason });
+        if (result.error) { toast("Failed to add offender."); return; }
         document.getElementById("o-roblox").value = "";
         document.getElementById("o-discord").value = "";
         document.getElementById("o-regiment").value = "";
@@ -403,7 +405,7 @@
     }
 
     async function deleteOffender(id) {
-        await db.from("offenders").delete().eq("id", id);
+        await apiCall("deleteOffender", { id });
         refreshAll();
         toast("Offender removed.");
     }
@@ -442,8 +444,8 @@
         const case_id = document.getElementById("c-id").value.trim();
         const link    = document.getElementById("c-link").value.trim();
         if (!case_id || !link) { toast("Case ID and link are required."); return; }
-        const { error } = await db.from("cases").insert({ case_id, link });
-        if (error) { toast("Failed to publish case file."); return; }
+        const result = await apiCall("addCase", { case_id, link });
+        if (result.error) { toast("Failed to publish case file."); return; }
         document.getElementById("c-id").value = "";
         document.getElementById("c-link").value = "";
         refreshAll();
@@ -451,7 +453,7 @@
     }
 
     async function deleteCaseFile(id) {
-        await db.from("cases").delete().eq("id", id);
+        await apiCall("deleteCase", { id });
         refreshAll();
         toast("Case file removed.");
     }
