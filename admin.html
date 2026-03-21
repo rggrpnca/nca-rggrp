@@ -335,10 +335,13 @@
     }
 
     async function apiCall(action, payload) {
+        const token = sessionStorage.getItem("nca_token");
         const res = await fetch("/api/admin", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "x-admin-token": token
+            },
             body: JSON.stringify({ action, payload })
         });
         return res.json();
