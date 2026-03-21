@@ -237,7 +237,7 @@
         </div>
     </div>
 
-    <div class="footer">© National Crime Agency • Academy Gateway • Royal Grenadier Guards Roleplay | Roblox</div>
+    <div class="footer">© National Crime Agency • Academy Gateway • Authorized Public Access</div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -331,11 +331,18 @@
             const d2faFile = document.getElementById("discord2fa").files[0];
             const timestamp = Date.now();
 
-            const { data: r2faData } = await db.storage.from("2fa-proof").upload(`${timestamp}-roblox-${r2faFile.name}`, r2faFile);
-            const { data: d2faData } = await db.storage.from("2fa-proof").upload(`${timestamp}-discord-${d2faFile.name}`, d2faFile);
+            let r2faUrl = "";
+            let d2faUrl = "";
 
-            const r2faUrl = r2faData ? db.storage.from("2fa-proof").getPublicUrl(r2faData.path).data.publicUrl : "";
-            const d2faUrl = d2faData ? db.storage.from("2fa-proof").getPublicUrl(d2faData.path).data.publicUrl : "";
+            try {
+                const { data: r2faData, error: r2faError } = await db.storage.from("2fa-proof").upload(`${timestamp}-roblox-${r2faFile.name}`, r2faFile);
+                if (r2faData) r2faUrl = db.storage.from("2fa-proof").getPublicUrl(r2faData.path).data.publicUrl;
+
+                const { data: d2faData, error: d2faError } = await db.storage.from("2fa-proof").upload(`${timestamp}-discord-${d2faFile.name}`, d2faFile);
+                if (d2faData) d2faUrl = db.storage.from("2fa-proof").getPublicUrl(d2faData.path).data.publicUrl;
+            } catch(e) {
+                console.log("File upload error:", e);
+            }
 
             const { error } = await db.from("applications").insert({
                 roblox_2fa_url: r2faUrl,
