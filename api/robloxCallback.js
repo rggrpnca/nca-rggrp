@@ -1,3 +1,6 @@
+import { readFileSync } from "fs";
+import { join } from "path";
+
 const AUTHORISED_USERS = ["ashtonjohan_4729", "Bruhwhatthesksk"];
 
 export default async function handler(req, res) {
@@ -43,9 +46,16 @@ export default async function handler(req, res) {
             `);
         }
 
-        // Set HttpOnly cookie — token never appears in URL
-        res.setHeader("Set-Cookie", `nca_token=${process.env.ADMIN_SECRET_TOKEN}; HttpOnly; Secure; SameSite=Strict; Path=/`);
-        res.redirect("/api/getAdmin");
+        // Serve admin page directly — no redirect, no token in URL
+        const adminHtml = readFileSync(join(process.cwd(), "admin.html"), "utf8");
+        const injected = adminHtml.replace(
+            "<head>",
+            `<head><script>sessionStorage.setItem("nca_token", "${process.env.ADMIN_SECRET_TOKEN}");</script>`
+        );
+
+        res.setHeader("Content-Type", "text/html");
+        res.setHeader("Cache-Control", "no-store");
+        res.status(200).send(injected);
 
     } catch (err) {
         console.log("Error:", err.message);
