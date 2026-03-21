@@ -44,6 +44,8 @@
         .login-error { margin-top: 12px; font-size: 12px; color: #ff5555; display: none; }
         .back-link { margin-top: 16px; display: block; font-size: 12px; color: #555; text-decoration: none; transition: 0.2s; }
         .back-link:hover { color: #aaa; }
+        .roblox-btn { display: block; width: 100%; padding: 12px; background: #00b3ff; border-radius: 8px; color: white; font-size: 14px; font-weight: bold; text-decoration: none; text-align: center; transition: 0.3s; font-family: "Montserrat", Arial, sans-serif; margin-bottom: 14px; }
+        .roblox-btn:hover { background: #0090cc; transform: scale(1.02); }
     </style>
 </head>
 <body>
@@ -52,44 +54,20 @@
     <div class="login-box">
         <img src="nca.png">
         <h2>Admin Access</h2>
-        <p>Authorised personnel only</p>
-        <input type="password" id="pwInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
-        <button onclick="doLogin()">Login</button>
-        <div class="login-error" id="loginError">Incorrect password. Access denied.</div>
+        <p>Authorised personnel only — login with your Roblox account</p>
+        <a href="/api/robloxAuth" class="roblox-btn">
+            <img src="https://www.roblox.com/favicon.ico" style="width:18px;vertical-align:middle;margin-right:8px;">
+            Login with Roblox
+        </a>
+        <div class="login-error" id="loginError" style="display:none;">Access denied or an error occurred.</div>
         <a class="back-link" href="index.html">← Back to Portal</a>
     </div>
 
     <script>
-        async function doLogin() {
-            const pw  = document.getElementById("pwInput").value;
-            const btn = document.querySelector("button");
-            const err = document.getElementById("loginError");
-            btn.textContent = "Verifying...";
-            btn.disabled = true;
-            err.style.display = "none";
-
-            try {
-                const res  = await fetch("/api/admin", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ action: "login", payload: { password: pw } })
-                });
-                const data = await res.json();
-
-                if (data.success && data.token) {
-                    sessionStorage.setItem("nca_token", data.token);
-                    window.location.href = `/api/getAdmin?token=${data.token}`;
-                } else {
-                    err.style.display = "block";
-                    document.getElementById("pwInput").value = "";
-                }
-            } catch (e) {
-                err.textContent = "Connection error. Try again.";
-                err.style.display = "block";
-            }
-
-            btn.textContent = "Login";
-            btn.disabled = false;
+        // Show error if redirected back with error param
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("error")) {
+            document.getElementById("loginError").style.display = "block";
         }
     </script>
 </body>
