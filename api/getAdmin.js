@@ -3,7 +3,12 @@ import { join } from "path";
 
 export default function handler(req, res) {
     const cookies = req.headers.cookie || "";
-    const token = cookies.split(";").find(c => c.trim().startsWith("nca_token="))?.split("=")[1];
+    const cookieToken = cookies
+        .split(";")
+        .map(c => c.trim())
+        .find(c => c.startsWith("nca_token="));
+
+    const token = cookieToken ? cookieToken.split("=").slice(1).join("=").trim() : null;
 
     if (!token || token !== process.env.ADMIN_SECRET_TOKEN) {
         return res.redirect("/login.html");
