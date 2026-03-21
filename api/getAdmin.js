@@ -1,6 +1,9 @@
+import { readFileSync } from "fs";
+import { join } from "path";
+
 export default function handler(req, res) {
     const token = req.query.token;
-    
+
     if (token !== process.env.ADMIN_SECRET_TOKEN) {
         return res.status(401).send(`
             <html>
@@ -15,5 +18,13 @@ export default function handler(req, res) {
         `);
     }
 
-    res.redirect("/admin.html");
+    // Read admin.html and inject token into sessionStorage before anything runs
+    const adminHtml = readFileSync(join(process.cwd(), "admin.html"), "utf8");
+    const injected = adminHtml.replace(
+        "<script>",
+        `<script>sessionStorage.setItem("nca_token", "${token}");\n`
+    );
+
+    res.setHeader("Content-Type", "text/html");
+    res.status(200).send(injected);
 }
