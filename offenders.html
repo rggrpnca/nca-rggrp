@@ -66,7 +66,7 @@
     <div class="container"><div class="grid" id="grid"></div></div>
     <div class="page-info" id="pageInfo"></div>
     <div class="pagination" id="pagination"></div>
-    <div class="footer">© National Crime Agency • Offenders Database • Royal Grenadier Guards Roleplay | Roblox</div>
+    <div class="footer">© National Crime Agency • Offenders Database • Authorized Public Access</div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -112,11 +112,13 @@
             slice.forEach(o => {
                 const card = document.createElement("div");
                 card.className = "card";
+                const date = o.created_at ? new Date(o.created_at).toLocaleString() : "N/A";
                 card.innerHTML = `
                     <span class="badge ${getBadgeClass(o.punishment)}">${o.punishment || "Unknown"}</span>
                     <h3>${o.roblox || "Unknown"}</h3>
                     <div class="field">Discord: <span>${o.discord || "N/A"}</span></div>
                     <div class="field">Regiment: <span>${o.regiment || "N/A"}</span></div>
+                    <div class="field">Issued: <span>${date}</span></div>
                     <div class="reason-box">"${o.reason || "No reason provided."}"</div>
                 `;
                 grid.appendChild(card);
