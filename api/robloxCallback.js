@@ -43,11 +43,12 @@ export default async function handler(req, res) {
             `);
         }
 
-        // Set cookie and redirect to getAdmin with NO token in URL
+        // Set HttpOnly cookie — token never appears in URL
         res.setHeader("Set-Cookie", `nca_token=${process.env.ADMIN_SECRET_TOKEN}; HttpOnly; Secure; SameSite=Strict; Path=/`);
         res.redirect("/api/getAdmin");
 
     } catch (err) {
+        console.log("Error:", err.message);
         res.redirect("/login.html?error=server_error");
     }
 }
