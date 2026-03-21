@@ -89,7 +89,7 @@
 <!-- No login overlay — handled by login.html -->
 
 <div class="head">
-    <img src="nca.png">
+    <img src="/nca.png">
     <div class="head-title">Admin Panel</div>
     <button class="logout-btn" onclick="doLogout()">Log Out</button>
 </div>
@@ -192,35 +192,14 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhaWd3bm1va29pYXBmZXR4cXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMDMxOTAsImV4cCI6MjA4OTU3OTE5MH0.ZN4tel3cBMt8kXFUMs0afqP05rJiPsiSTH4YCgAk5Kg"
     );
 
-    // Block access if not logged in via login.html
-    const token = sessionStorage.getItem("nca_token");
-    if (!token) {
-        window.location.href = "login.html";
-    } else {
-        // Verify token is valid server-side before showing dashboard
-        fetch("/api/admin", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-admin-token": token
-            },
-            body: JSON.stringify({ action: "verifyToken", payload: {} })
-        }).then(r => r.json()).then(data => {
-            if (data.success) {
-                document.getElementById("dashboard").style.display = "block";
-                refreshAll();
-            } else {
-                sessionStorage.removeItem("nca_token");
-                window.location.href = "login.html";
-            }
-        }).catch(() => {
-            window.location.href = "login.html";
-        });
-    }
+    // Auth is handled by api/getAdmin.js — if we're here, we're authorised
+    document.getElementById("dashboard").style.display = "block";
+    refreshAll();
 
     function doLogout() {
-        sessionStorage.removeItem("nca_token");
-        window.location.href = "index.html";
+        // Clear the cookie and redirect to home
+        document.cookie = "nca_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/index.html";
     }
 
     function switchPanel(id, el) {
@@ -356,13 +335,10 @@
     }
 
     async function apiCall(action, payload) {
-        const token = sessionStorage.getItem("nca_token");
         const res = await fetch("/api/admin", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-admin-token": token
-            },
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
             body: JSON.stringify({ action, payload })
         });
         return res.json();
